@@ -1,20 +1,36 @@
-﻿// Zadacha1.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿#include <iostream>
+#include <string>
+using namespace std;
+void debug(string s) {
+    cout << "Debug = " << s << endl;
+}
 
-#include <iostream>
+void debug(int x) {
+    cout << "Debug = " << x << endl;
+}
+
+string Encrypt(string inputString) { //Функция зашифровки строки
+    string outputString;
+    for (int i = 0, counterSameSimbols = 1; i < inputString.length(); i += counterSameSimbols) {
+        debug(1);
+        char nowSymbol = inputString[i];
+        for (int i1 = i++; true; i1++) {
+            debug("abc");
+            if (nowSymbol == inputString[i]) {
+                
+                counterSameSimbols++;
+            } else {
+                
+                outputString += nowSymbol + counterSameSimbols;
+            }
+            break;
+        }
+    }
+    return outputString;
+}
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    string s = "aaaaaa";
+    cout << Encrypt(s);
 }
-
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
