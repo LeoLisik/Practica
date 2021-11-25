@@ -1,2 +1,3 @@
 ﻿  Zadacha1.cpp
+D:\Practica\Zadacha1\Zadacha1\Zadacha1.cpp(41,107): warning C4244: =: преобразование "double" в "int", возможна потеря данных
   Zadacha1.vcxproj -> D:\Practica\Zadacha1\x64\Debug\Zadacha1.exe
