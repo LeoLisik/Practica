@@ -25,7 +25,7 @@ void Encrypt() { //Функция зашифровки строки
     if (!file.is_open()) { cout << "Ошибка 1: Файл не открылся. Попробуйте для начала его создать." << endl; return; } //Проверка открытия файла
     file << outputString; //Записать итог в файл
     file.close(); //Закрыть файл
-    cout << endl << endl << endl << "Архивация успешно выполнена" << endl << endl << endl << endl;
+    cout << endl << "Архивация успешно выполнена" << endl << endl << endl << endl;
 }
 
 int main()
@@ -38,11 +38,12 @@ int main()
         string enterStr;
         cout << "1 - Создать файл и записать в него строку" << endl << "2 - Заархивировать файл" << endl << "3 - Разархивировать файл" << endl << "0 - Выход из программы" << endl << "Ваш выбор = ";
         getline(cin, enterStr);
+        cout << endl << endl;
         if ((ch != -1) or (ch2 != -1 and ch2 != 0) or (ch3 != 0)) { enterInt = 9; } else { enterInt = atof(enterStr.c_str()); }
         switch (enterInt) { //Переключатель выборов пользователя
-        case 1: { cout << "Функция в разработке" << endl; break; } //Запуск функцию создания файлов и записи в файл
+        case 1: { cout << endl << "Функция в разработке" << endl << endl << endl; break; } //Запуск функцию создания файлов и записи в файл
         case 2: { Encrypt(); break; } //Запуск функции архивации файла
-        case 3: { cout << "Функция в разработке" << endl; break; } //Запуск функции разархивации файла
+        case 3: { cout << endl << "Функция в разработке" << endl << endl << endl; break; } //Запуск функции разархивации файла
         case 0: { endProgram = 1; break; } //Выход из программы
         }
     }
