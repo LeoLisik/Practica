@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include <string>
+#include <Windows.h>
 using namespace std;
 void debug(string s) {
     cout << "Debug = " << s << endl;
@@ -12,25 +13,23 @@ void debug(int x) {
 string Encrypt(string inputString) { //Функция зашифровки строки
     string outputString;
     for (int i = 0, counterSameSimbols = 1; i < inputString.length(); i += counterSameSimbols) {
-        debug(1);
+        debug("Первый цикл");
         char nowSymbol = inputString[i];
-        for (int i1 = i++; true; i1++) {
-            debug("abc");
-            if (nowSymbol == inputString[i]) {
-                
-                counterSameSimbols++;
-            } else {
-                
-                outputString += nowSymbol + counterSameSimbols;
-            }
-            break;
+        outputString += nowSymbol;
+        string resultSymbols;
+        for (int i1 = i++; nowSymbol == inputString[i1]; i1++, counterSameSimbols++) {
+            debug("Второй цикл");
         }
+        cout << endl << counterSameSimbols--;
+        outputString += counterSameSimbols--;
     }
     return outputString;
 }
 
 int main()
 {
-    string s = "aaaaaa";
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    string s = "aaaaaab";
     cout << Encrypt(s);
 }
