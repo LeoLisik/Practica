@@ -6,6 +6,27 @@
 #define ch2 enterStr.find_last_of("-")
 #define ch3  enterStr.find_last_of(".")-enterStr.find_first_of(".")
 
+void CreateInput() {
+    fstream File("input.txt");
+    int enterInt = 9;
+    string enterStr;
+    if (File) {
+        cout << "Файл input уже существует, хотите перезаписать его?" << endl;
+        while (enterInt != 1 and enterInt != 2) {
+            cout << "1 - Да" << endl << "2 - Нет" << endl;
+            getline(cin, enterStr);
+            cout << endl << endl;
+            if ((ch != -1) or (ch2 != -1 and ch2 != 0) or (ch3 != 0)) { cout << "\x1b[31mПожалуйста введите допустимое число\x1b[0m" << endl; enterInt = 9; }
+            else { enterInt = atof(enterStr.c_str()); }
+            if (enterInt != 1 and enterInt != 2) { cout << "\x1b[31mПожалуйста введите допустимое число\x1b[0m" << endl; }
+            switch (enterInt) {
+            case 1: { File.close(); remove("input.txt"); File.open("input.txt", ios::out | ios::app); }
+            case 2: {}
+            }
+        }
+    }
+}
+
 void Encrypt() { //Функция зашифровки строки
     string inputString, outputString;
     fstream file ("input.txt"); //Открыть файла ввода
@@ -32,19 +53,5 @@ int main()
 {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
-    int endProgram = 0; 
-    while (endProgram == 0) { //Цикл работы программы
-        int enterInt;
-        string enterStr;
-        cout << "1 - Создать файл и записать в него строку" << endl << "2 - Заархивировать файл" << endl << "3 - Разархивировать файл" << endl << "0 - Выход из программы" << endl << "Ваш выбор = ";
-        getline(cin, enterStr);
-        cout << endl << endl;
-        if ((ch != -1) or (ch2 != -1 and ch2 != 0) or (ch3 != 0)) { enterInt = 9; } else { enterInt = atof(enterStr.c_str()); }
-        switch (enterInt) { //Переключатель выборов пользователя
-        case 1: { cout << endl << "Функция в разработке" << endl << endl << endl; break; } //Запуск функцию создания файлов и записи в файл
-        case 2: { Encrypt(); break; } //Запуск функции архивации файла
-        case 3: { cout << endl << "Функция в разработке" << endl << endl << endl; break; } //Запуск функции разархивации файла
-        case 0: { endProgram = 1; break; } //Выход из программы
-        }
-    }
+    CreateInput();
 }
