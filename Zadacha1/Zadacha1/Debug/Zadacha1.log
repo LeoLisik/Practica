@@ -1,0 +1,4 @@
+﻿  Zadacha1.cpp
+C:\Users\Alex\Practica\Zadacha1\Zadacha1\Zadacha1.cpp(29,27): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Alex\Practica\Zadacha1\Zadacha1\Zadacha1.cpp(9,26): warning C4101: PointerCountOutput: неиспользованная локальная переменная
+  Zadacha1.vcxproj -> C:\Users\Alex\Practica\Zadacha1\Debug\Zadacha1.exe
