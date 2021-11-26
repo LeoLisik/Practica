@@ -1,4 +1,4 @@
-#include <Windows.h>
+п»ї#include <Windows.h>
 #include "Header.h"
 #include <fstream>
 #include <locale.h>
@@ -6,45 +6,78 @@
 #define ch2 enterStr.find_last_of("-")
 #define ch3  enterStr.find_last_of(".")-enterStr.find_first_of(".")
 
-void Encrypt() { //Функция зашифровки строки
+void CreateInput() { //Р¤СѓРЅРєС†РёСЏ СЃРѕР·РґР°РЅРёСЏ Рё РІРІРѕРґР° РІ input/output
+    fstream File("input.txt");
+    int enterInt = 9;
+    string enterStr = " 1";
+    string forInput;
+    while (enterStr.find_first_of("0123456789") < -1) { //РџРѕРєР° РІ СЃС‚СЂРѕРєРµ РµСЃС‚СЊ С†РёС„СЂС‹
+        cout << "Р’РІРµРґРёС‚Рµ СЃС‚СЂРѕРєСѓ РґР»СЏ Р·Р°РїРёСЃРё РІ С„Р°Р№Р» = ";
+        getline(cin, enterStr);
+        cout << endl << endl;
+        if (enterStr.find_first_of("0123456789") < -1) { cout << "\x1b[31mРџРѕР¶Р°Р»СѓР№СЃС‚Р° РІРІРµРґРёС‚Рµ СЃС‚СЂРѕРєСѓ Р±РµР· С‡РёСЃРµР»\x1b[0m" << endl; } //Р’С‹РІРѕРґ РѕС€РёР±РєРё РїСЂРё РѕР±РЅР°СЂСѓР¶РµРЅРёРё С‡РёСЃРµР»
+        else { forInput = enterStr; enterStr.clear(); } //РЎРѕС…СЂР°РЅРµРЅРёРµ СЃС‚СЂРѕРєРё РІ РґСЂСѓРіРѕР№ РїРµСЂРµРјРµРЅРЅРѕР№ Рё РѕС‡РёС‰РµРЅРёРµ РІРІРѕРґРЅРѕР№ СЃС‚СЂРѕРєРё РґР»СЏ РґР°Р»СЊРЅРµР№С€РµРіРѕ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ
+    }
+    if (File) { //Р•СЃР»Рё input РѕС‚РєСЂС‹Р»СЃСЏ
+        cout << "Р¤Р°Р№Р» input СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚, С…РѕС‚РёС‚Рµ РїРµСЂРµР·Р°РїРёСЃР°С‚СЊ РµРіРѕ?" << endl;
+        while (enterInt != 1 and enterInt != 2) { //РџРѕРєР° РІС‹Р±РѕСЂ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РЅРµРєРѕСЂРµРєС‚РЅС‹Р№
+            cout << "1 - Р”Р°" << endl << "2 - РќРµС‚" << endl;
+            getline(cin, enterStr);
+            cout << endl << endl;
+            if ((ch != -1) or (ch2 != -1 and ch2 != 0) or (ch3 != 0)) { cout << "\x1b[31mРџРѕР¶Р°Р»СѓР№СЃС‚Р° РІРІРµРґРёС‚Рµ РґРѕРїСѓСЃС‚РёРјРѕРµ С‡РёСЃР»Рѕ\x1b[0m" << endl; enterInt = 9; } //РџСЂРѕРІРµСЂРєР° РЅР° Р±СѓРєРІС‹
+            else { enterInt = atof(enterStr.c_str()); } 
+            enterStr.clear(); //РћС‡РёСЃС‚РєР° enterStr
+            if (enterInt != 1 and enterInt != 2) { cout << "\x1b[31mРџРѕР¶Р°Р»СѓР№СЃС‚Р° РІРІРµРґРёС‚Рµ РґРѕРїСѓСЃС‚РёРјРѕРµ С‡РёСЃР»Рѕ\x1b[0m" << endl; } //РџСЂРѕРІРµСЂРєР° РЅР° РґРѕРїСѓСЃС‚РёРјРѕРµ С‡РёСЃР»Рѕ
+            switch (enterInt) { //РџРµСЂРµРєР»СЋС‡Р°С‚РµР»СЊ РІС‹Р±РѕСЂР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+            case 1: { File.close(); remove("input.txt"); File.open("input.txt", ios::out | ios::app); File << forInput; File.close(); } //РџРµСЂРµР·Р°РїРёСЃР°С‚СЊ input
+            case 2: { File.close(); } //Р—Р°РєСЂС‹С‚СЊ input
+            }
+        }
+    } else { File.open("input.txt", ios::in | ios::app); File << forInput;  File.close(); } //Р•СЃР»Рё input РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ - СЃРѕР·РґР°С‚СЊ
+    File.open("output.txt");
+    if (!File) { File.open("output.txt", ios::in | ios::app); File.close(); } //Р•СЃР»Рё output РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ - СЃРѕР·РґР°С‚СЊ
+}
+
+void Encrypt() { //Р¤СѓРЅРєС†РёСЏ Р·Р°С€РёС„СЂРѕРІРєРё СЃС‚СЂРѕРєРё
     string inputString, outputString;
-    fstream file ("input.txt"); //Открыть файла ввода
-    if (!file.is_open()) {cout << "Ошибка 1: Файл не открылся. Попробуйте для начала его создать." << endl; return;} //Проверка открытия файла
-    getline(file, inputString); //Считать строку из файла
-    file.close(); //Закрыть файл
-    for (int i = 0, counterSameSimbols; i < inputString.length(); i += counterSameSimbols - 1) { //Цикл получающий каждый раз новый символ
+    fstream file ("input.txt"); //РћС‚РєСЂС‹С‚СЊ С„Р°Р№Р»Р° РІРІРѕРґР°
+    if (!file.is_open()) {cout << "РћС€РёР±РєР° 1: Р¤Р°Р№Р» РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ. РџРѕРїСЂРѕР±СѓР№С‚Рµ РґР»СЏ РЅР°С‡Р°Р»Р° РµРіРѕ СЃРѕР·РґР°С‚СЊ." << endl; return;} //РџСЂРѕРІРµСЂРєР° РѕС‚РєСЂС‹С‚РёСЏ С„Р°Р№Р»Р°
+    getline(file, inputString); //РЎС‡РёС‚Р°С‚СЊ СЃС‚СЂРѕРєСѓ РёР· С„Р°Р№Р»Р°
+    file.close(); //Р—Р°РєСЂС‹С‚СЊ С„Р°Р№Р»
+    for (int i = 0, counterSameSimbols; i < inputString.length(); i += counterSameSimbols - 1) { //Р¦РёРєР» РїРѕР»СѓС‡Р°СЋС‰РёР№ РєР°Р¶РґС‹Р№ СЂР°Р· РЅРѕРІС‹Р№ СЃРёРјРІРѕР»
         counterSameSimbols = 0; 
-        outputString += inputString[i]; //Запись символа в итоговую строку 
-        for (int i1 = i++; inputString[i] == inputString[i1]; i1++, counterSameSimbols++) {} //Счётчик количества одинакового символа
-        if (counterSameSimbols == 0) { counterSameSimbols++; } //Если символ всего один, то увеличить counterSameSimbols на 1
-        if (counterSameSimbols > 1) { //Если повторов символа больше 1, то записывать цифру
+        outputString += inputString[i]; //Р—Р°РїРёСЃСЊ СЃРёРјРІРѕР»Р° РІ РёС‚РѕРіРѕРІСѓСЋ СЃС‚СЂРѕРєСѓ 
+        for (int i1 = i++; inputString[i] == inputString[i1]; i1++, counterSameSimbols++) {} //РЎС‡С‘С‚С‡РёРє РєРѕР»РёС‡РµСЃС‚РІР° РѕРґРёРЅР°РєРѕРІРѕРіРѕ СЃРёРјРІРѕР»Р°
+        if (counterSameSimbols == 0) { counterSameSimbols++; } //Р•СЃР»Рё СЃРёРјРІРѕР» РІСЃРµРіРѕ РѕРґРёРЅ, С‚Рѕ СѓРІРµР»РёС‡РёС‚СЊ counterSameSimbols РЅР° 1
+        if (counterSameSimbols > 1) { //Р•СЃР»Рё РїРѕРІС‚РѕСЂРѕРІ СЃРёРјРІРѕР»Р° Р±РѕР»СЊС€Рµ 1, С‚Рѕ Р·Р°РїРёСЃС‹РІР°С‚СЊ С†РёС„СЂСѓ
             outputString += to_string(counterSameSimbols);
         }
     }
-    file.open("output.txt"); //Открытие файла вывода
-    if (!file.is_open()) { cout << "Ошибка 1: Файл не открылся. Попробуйте для начала его создать." << endl; return; } //Проверка открытия файла
-    file << outputString; //Записать итог в файл
-    file.close(); //Закрыть файл
-    cout << endl << "Архивация успешно выполнена" << endl << endl << endl << endl;
+    file.open("output.txt"); //РћС‚РєСЂС‹С‚РёРµ С„Р°Р№Р»Р° РІС‹РІРѕРґР°
+    if (!file.is_open()) { cout << "РћС€РёР±РєР° 1: Р¤Р°Р№Р» РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ. РџРѕРїСЂРѕР±СѓР№С‚Рµ РґР»СЏ РЅР°С‡Р°Р»Р° РµРіРѕ СЃРѕР·РґР°С‚СЊ." << endl; return; } //РџСЂРѕРІРµСЂРєР° РѕС‚РєСЂС‹С‚РёСЏ С„Р°Р№Р»Р°
+    file << outputString; //Р—Р°РїРёСЃР°С‚СЊ РёС‚РѕРі РІ С„Р°Р№Р»
+    file.close(); //Р—Р°РєСЂС‹С‚СЊ С„Р°Р№Р»
+    cout << endl << "РђСЂС…РёРІР°С†РёСЏ СѓСЃРїРµС€РЅРѕ РІС‹РїРѕР»РЅРµРЅР°" << endl << endl << endl << endl;
 }
 
 int main()
 {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
-    int endProgram = 0; 
-    while (endProgram == 0) { //Цикл работы программы
+    int endProgram = 0;
+    while (endProgram == 0) { //Г–ГЁГЄГ« Г°Г ГЎГ®ГІГ» ГЇГ°Г®ГЈГ°Г Г¬Г¬Г»
         int enterInt;
         string enterStr;
-        cout << "1 - Создать файл и записать в него строку" << endl << "2 - Заархивировать файл" << endl << "3 - Разархивировать файл" << endl << "0 - Выход из программы" << endl << "Ваш выбор = ";
+        cout << "1 - Г‘Г®Г§Г¤Г ГІГј ГґГ Г©Г« ГЁ Г§Г ГЇГЁГ±Г ГІГј Гў Г­ГҐГЈГ® Г±ГІГ°Г®ГЄГі" << endl << "2 - Г‡Г Г Г°ГµГЁГўГЁГ°Г®ГўГ ГІГј ГґГ Г©Г«" << endl << "3 - ГђГ Г§Г Г°ГµГЁГўГЁГ°Г®ГўГ ГІГј ГґГ Г©Г«" << endl << "0 - Г‚Г»ГµГ®Г¤ ГЁГ§ ГЇГ°Г®ГЈГ°Г Г¬Г¬Г»" << endl << "Г‚Г Гё ГўГ»ГЎГ®Г° = ";
         getline(cin, enterStr);
         cout << endl << endl;
-        if ((ch != -1) or (ch2 != -1 and ch2 != 0) or (ch3 != 0)) { enterInt = 9; } else { enterInt = atof(enterStr.c_str()); }
-        switch (enterInt) { //Переключатель выборов пользователя
-        case 1: { cout << endl << "Функция в разработке" << endl << endl << endl; break; } //Запуск функцию создания файлов и записи в файл
-        case 2: { Encrypt(); break; } //Запуск функции архивации файла
-        case 3: { cout << endl << "Функция в разработке" << endl << endl << endl; break; } //Запуск функции разархивации файла
-        case 0: { endProgram = 1; break; } //Выход из программы
+        if ((ch != -1) or (ch2 != -1 and ch2 != 0) or (ch3 != 0)) { enterInt = 9; }
+        else { enterInt = atof(enterStr.c_str()); }
+        switch (enterInt) { //ГЏГҐГ°ГҐГЄГ«ГѕГ·Г ГІГҐГ«Гј ГўГ»ГЎГ®Г°Г®Гў ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гї
+        case 1: { cout << endl << "Г”ГіГ­ГЄГ¶ГЁГї Гў Г°Г Г§Г°Г ГЎГ®ГІГЄГҐ" << endl << endl << endl; break; } //Г‡Г ГЇГіГ±ГЄ ГґГіГ­ГЄГ¶ГЁГѕ Г±Г®Г§Г¤Г Г­ГЁГї ГґГ Г©Г«Г®Гў ГЁ Г§Г ГЇГЁГ±ГЁ Гў ГґГ Г©Г«
+        case 2: { Encrypt(); break; } //Г‡Г ГЇГіГ±ГЄ ГґГіГ­ГЄГ¶ГЁГЁ Г Г°ГµГЁГўГ Г¶ГЁГЁ ГґГ Г©Г«Г 
+        case 3: { cout << endl << "Г”ГіГ­ГЄГ¶ГЁГї Гў Г°Г Г§Г°Г ГЎГ®ГІГЄГҐ" << endl << endl << endl; break; } //Г‡Г ГЇГіГ±ГЄ ГґГіГ­ГЄГ¶ГЁГЁ Г°Г Г§Г Г°ГµГЁГўГ Г¶ГЁГЁ ГґГ Г©Г«Г 
+        case 0: { endProgram = 1; break; } //Г‚Г»ГµГ®Г¤ ГЁГ§ ГЇГ°Г®ГЈГ°Г Г¬Г¬Г»
         }
     }
 }
