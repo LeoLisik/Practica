@@ -6,25 +6,36 @@
 #define ch2 enterStr.find_last_of("-")
 #define ch3  enterStr.find_last_of(".")-enterStr.find_first_of(".")
 
-void CreateInput() {
+void CreateInput() { //Функция создания и ввода в input/output
     fstream File("input.txt");
     int enterInt = 9;
-    string enterStr;
-    if (File) {
+    string enterStr = " 1";
+    string forInput;
+    while (enterStr.find_first_of("0123456789") < -1) { //Пока в строке есть цифры
+        cout << "Введите строку для записи в файл = ";
+        getline(cin, enterStr);
+        cout << endl << endl;
+        if (enterStr.find_first_of("0123456789") < -1) { cout << "\x1b[31mПожалуйста введите строку без чисел\x1b[0m" << endl; } //Вывод ошибки при обнаружении чисел
+        else { forInput = enterStr; enterStr.clear(); } //Сохранение строки в другой переменной и очищение вводной строки для дальнейшего использования
+    }
+    if (File) { //Если input открылся
         cout << "Файл input уже существует, хотите перезаписать его?" << endl;
-        while (enterInt != 1 and enterInt != 2) {
+        while (enterInt != 1 and enterInt != 2) { //Пока выбор пользователя некоректный
             cout << "1 - Да" << endl << "2 - Нет" << endl;
             getline(cin, enterStr);
             cout << endl << endl;
-            if ((ch != -1) or (ch2 != -1 and ch2 != 0) or (ch3 != 0)) { cout << "\x1b[31mПожалуйста введите допустимое число\x1b[0m" << endl; enterInt = 9; }
-            else { enterInt = atof(enterStr.c_str()); }
-            if (enterInt != 1 and enterInt != 2) { cout << "\x1b[31mПожалуйста введите допустимое число\x1b[0m" << endl; }
-            switch (enterInt) {
-            case 1: { File.close(); remove("input.txt"); File.open("input.txt", ios::out | ios::app); }
-            case 2: {}
+            if ((ch != -1) or (ch2 != -1 and ch2 != 0) or (ch3 != 0)) { cout << "\x1b[31mПожалуйста введите допустимое число\x1b[0m" << endl; enterInt = 9; } //Проверка на буквы
+            else { enterInt = atof(enterStr.c_str()); } 
+            enterStr.clear(); //Очистка enterStr
+            if (enterInt != 1 and enterInt != 2) { cout << "\x1b[31mПожалуйста введите допустимое число\x1b[0m" << endl; } //Проверка на допустимое число
+            switch (enterInt) { //Переключатель выбора пользователя
+            case 1: { File.close(); remove("input.txt"); File.open("input.txt", ios::out | ios::app); File << forInput; File.close(); } //Перезаписать input
+            case 2: { File.close(); } //Закрыть input
             }
         }
-    }
+    } else { File.open("input.txt", ios::in | ios::app); File << forInput;  File.close(); } //Если input не открылся - создать
+    File.open("output.txt");
+    if (!File) { File.open("output.txt", ios::in | ios::app); File.close(); } //Если output не открылся - создать
 }
 
 void Encrypt() { //Функция зашифровки строки
