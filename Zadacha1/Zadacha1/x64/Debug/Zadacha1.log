@@ -1,4 +1,4 @@
 ﻿  Zadacha1.cpp
-C:\Users\trufe\Practica\Zadacha1\Zadacha1\Zadacha1.cpp(28,35): warning C4244: =: преобразование "double" в "int", возможна потеря данных
-C:\Users\trufe\Practica\Zadacha1\Zadacha1\Zadacha1.cpp(144,31): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+C:\Users\trufe\Practica\Zadacha1\Zadacha1\Zadacha1.cpp(32,32): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+C:\Users\trufe\Practica\Zadacha1\Zadacha1\Zadacha1.cpp(155,31): warning C4244: =: преобразование "double" в "int", возможна потеря данных
   Zadacha1.vcxproj -> C:\Users\trufe\Practica\Zadacha1\x64\Debug\Zadacha1.exe

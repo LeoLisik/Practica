@@ -2,9 +2,6 @@
 #include "Header.h"
 #include <fstream>
 #include <locale.h>
-#define ch enterStr.find_last_not_of("-0123456789.")
-#define ch2 enterStr.find_last_of("-")
-#define ch3  enterStr.find_last_of(".")-enterStr.find_first_of(".")
 
 void CreateInput() { //Функция создания и ввода в input/output
     fstream File("input.txt");
@@ -15,8 +12,12 @@ void CreateInput() { //Функция создания и ввода в input/ou
         cout << "Введите строку для записи в файл = ";
         getline(cin, enterStr);
         cout << endl << endl;
-        if (enterStr.find_first_of("0123456789") < -1) { cout << "\x1b[31mОшибка 0: Некоректный ввод данных\x1b[0m" << endl; } //Вывод ошибки при обнаружении чисел
-        else { forInput = enterStr; enterStr.clear(); } //Сохранение строки в другой переменной и очищение вводной строки для дальнейшего использования
+        if (enterStr.find_first_of("0123456789") < -1) { //Вывод ошибки при обнаружении чисел
+            cout << "\x1b[31mОшибка 0: Некоректный ввод данных\x1b[0m" << endl; 
+        } else { //Сохранение строки в другой переменной и очищение вводной строки для дальнейшего использования
+            forInput = enterStr; 
+            enterStr.clear(); 
+        } 
     }
     if (File) { //Если input открылся
         cout << "Файл input уже существует, хотите перезаписать его?" << endl;
@@ -24,59 +25,75 @@ void CreateInput() { //Функция создания и ввода в input/ou
             cout << "1 - Да" << endl << "2 - Нет" << endl << "Ваш выбор = ";
             getline(cin, enterStr);
             cout << endl << endl;
-            if ((ch != -1) or (ch2 != -1 and ch2 != 0) or (ch3 != 0)) { cout << "\x1b[31mОшибка 0: Некоректный ввод данных\x1b[0m"; enterInt = 9; } //Проверка на буквы
-            else { enterInt = atof(enterStr.c_str()); } 
+            if ((ch != -1) or (ch2 != -1 and ch2 != 0) or (ch3 != 0)) { //Проверка на буквы
+                cout << "\x1b[31mОшибка 0: Некоректный ввод данных\x1b[0m"; 
+                enterInt = 9; 
+            } else { 
+                enterInt = atof(enterStr.c_str()); 
+            } 
             enterStr.clear(); //Очистка enterStr
-            if (enterInt != 1 and enterInt != 2) { cout << "\x1b[31mОшибка 0: Некоректный ввод данных\x1b[0m" << endl; } //Проверка на допустимое число
+            if (enterInt != 1 and enterInt != 2) { //Проверка на допустимое число
+                cout << "\x1b[31mОшибка 0: Некоректный ввод данных\x1b[0m" << endl; 
+            }
             switch (enterInt) { //Переключатель выбора пользователя
             case 1: { File.close(); remove("input.txt"); File.open("input.txt", ios::out | ios::app); File << forInput; File.close(); cout << "\n" << "\x1b[32mФайл успешно перезаписан\x1b[0m" << "\n\n\n\n"; break; } //Перезаписать input
             case 2: { File.close(); cout << "\n" << "\x1b[33mФайл остался без изменений\x1b[0m" << "\n\n\n\n"; break; } //Закрыть input
             }
         }
+    } else { //Если input не открылся - создать
+        File.open("input.txt", ios::in | ios::app); 
+        File << forInput;  
+        File.close(); 
+        cout << "\n" << "\x1b[32mФайл успешно записан\x1b[0m" << "\n\n\n\n"; 
     }
-    else { File.open("input.txt", ios::in | ios::app); File << forInput;  File.close(); cout << "\n" << "\x1b[32mФайл успешно записан\x1b[0m" << "\n\n\n\n"; } //Если input не открылся - создать
     File.open("output.txt");
-    if (!File) { File.open("output.txt", ios::in | ios::app); File.close(); cout << "\n" << "\x1b[32moutput.txt успешно создан\x1b[0m" << "\n\n\n\n"; } //Если output не открылся - создать
+    if (!File) { //Если output не открылся - создать
+        File.open("output.txt", ios::in | ios::app); 
+        File.close(); 
+        cout << "\n" << "\x1b[32moutput.txt успешно создан\x1b[0m" << "\n\n\n\n"; 
+    } 
 }
 
-void Archive() { //Функция зашифровки строки
+void Archive() { //Функция архивирования строки
     string inputString, outputString;
     fstream file ("input.txt"); //Открыть файла ввода
-    if (!file.is_open()) {cout << "\n" << "\x1b[31mОшибка 1: Файл не открылся. Попробуйте для начала его создать.\x1b[0m" << "\n\n\n\n"; return;} //Проверка открытия файла
+    if (!file.is_open()) { //Проверка открытия файла
+        cout << "\n" << "\x1b[31mОшибка 1: Файл не открылся. Попробуйте для начала его создать.\x1b[0m" << "\n\n\n\n"; 
+        return;
+    } 
     getline(file, inputString); //Считать строку из файла
     file.close(); //Закрыть файл
     for (int i = 0, counterSameSimbols; i < inputString.length(); i += counterSameSimbols - 1) { //Цикл получающий каждый раз новый символ
         counterSameSimbols = 0; 
         outputString += inputString[i]; //Запись символа в итоговую строку 
         for (int i1 = i++; inputString[i] == inputString[i1]; i1++, counterSameSimbols++) {} //Счётчик количества одинакового символа
-        if (counterSameSimbols == 0) { counterSameSimbols++; } //Если символ всего один, то увеличить counterSameSimbols на 1
+        if (counterSameSimbols == 0) { //Если символ всего один, то увеличить counterSameSimbols на 1
+            counterSameSimbols++; 
+        } 
         if (counterSameSimbols > 1) { //Если повторов символа больше 1, то записывать цифру
             outputString += to_string(counterSameSimbols);
         }
     }
-    remove("output.txt");
-    file.open("output.txt", ios::app); //Открытие файла вывода
-    if (!file.is_open()) { cout << "\n" << "\x1b[31mОшибка 1: Файл не открылся. Попробуйте для начала его создать.\x1b[0m" << "\n\n\n\n"; return; } //Проверка открытия файла
+    file.open("output.txt"); //Открытие файла вывода
+    if (!file.is_open()) { //Проверка открытия файла
+        cout << "\n" << "\x1b[31mОшибка 1: Файл не открылся. Попробуйте для начала его создать.\x1b[0m" << "\n\n\n\n"; 
+        return; 
+    } 
     file << outputString; //Записать итог в файл
     file.close(); //Закрыть файл
     cout << "\n" << "\x1b[32mАрхивация успешно выполнена\x1b[0m" << "\n\n\n\n";
 }
 
 void Dearchive() {
-    SetConsoleCP(1251);
-    SetConsoleOutputCP(1251);
     string CountStringOutput, CountOutput, SimvolCountOutput, StringNumbersLetter, Dearchive = "";
     int NumbersLetter, ProverkaNumbers = 0;
     char  SimvolCount;
     ifstream Read("output.txt"); //создаём поток файла + открываем файл output.txt для чтения 
-    if (!Read.is_open()) {  //проверка на открытие файла
-        cout << "Ошибка открытия файла output.txt. Возможно его не существует.";
+    if (!Read) { //Проверка открытия файла
+        cout << "Ошибка открытия файла output.txt. Возможно его не существует."; 
         return;
     }
-    while (getline(Read, CountStringOutput)) { //цикл, который работает, пока в файле не закончится строки + каждую строчку из файла вносим в строку CountStringOutput
-        CountOutput = CountOutput + CountStringOutput; //объединяем все строки из файла в одну строку CountOutput
-        CountStringOutput.erase(0); //очищаем строку CountStringOutput
-    }
+    getline(Read, CountOutput);
     cout << "Было:" << CountOutput << endl;
     Read.close();//закрываем файл
     for (int i = 0; i < CountOutput.length(); i++) { //цикл, повторяющийся столько раз, сколько в строке CountOutput символов
