@@ -54,7 +54,8 @@ void Archive() { //Функция зашифровки строки
             outputString += to_string(counterSameSimbols);
         }
     }
-    file.open("output.txt"); //Открытие файла вывода
+    remove("output.txt");
+    file.open("output.txt", ios::app); //Открытие файла вывода
     if (!file.is_open()) { cout << "\n" << "\x1b[31mОшибка 1: Файл не открылся. Попробуйте для начала его создать.\x1b[0m" << "\n\n\n\n"; return; } //Проверка открытия файла
     file << outputString; //Записать итог в файл
     file.close(); //Закрыть файл
