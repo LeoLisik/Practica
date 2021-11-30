@@ -2,12 +2,17 @@
 #include "Header.h"
 #include <fstream>
 #include <locale.h>
+#include <iostream>
+#include <string>
+#define ch enterStr.find_last_not_of("-0123456789.")
+#define ch2 enterStr.find_last_of("-")
+#define ch3  enterStr.find_last_of(".")-enterStr.find_first_of(".")
+using namespace std;
 
 void CreateInput() { //Функция создания и ввода в input/output
     fstream File("input.txt");
     int enterInt = 9;
-    string enterStr = " 1";
-    string forInput;
+    string forInput, enterStr = "0";
     while (enterStr.find_first_of("0123456789") < -1) { //Пока в строке есть цифры
         cout << "Введите строку для записи в файл = ";
         getline(cin, enterStr);
@@ -36,7 +41,7 @@ void CreateInput() { //Функция создания и ввода в input/ou
                 cout << "\x1b[31mОшибка 0: Некоректный ввод данных\x1b[0m" << endl; 
             }
             switch (enterInt) { //Переключатель выбора пользователя
-            case 1: { File.close(); remove("input.txt"); File.open("input.txt", ios::out | ios::app); File << forInput; File.close(); cout << "\n" << "\x1b[32mФайл успешно перезаписан\x1b[0m" << "\n\n\n\n"; break; } //Перезаписать input
+            case 1: { File.close(); File.open("input.txt", ios::out); File << forInput; File.close(); cout << "\n" << "\x1b[32mФайл успешно перезаписан\x1b[0m" << "\n\n\n\n"; break; } //Перезаписать input
             case 2: { File.close(); cout << "\n" << "\x1b[33mФайл остался без изменений\x1b[0m" << "\n\n\n\n"; break; } //Закрыть input
             }
         }
@@ -58,25 +63,22 @@ void Archive() { //Функция архивирования строки
     string inputString, outputString;
     fstream file ("input.txt"); //Открыть файла ввода
     if (!file.is_open()) { //Проверка открытия файла
-        cout << "\n" << "\x1b[31mОшибка 1: Файл не открылся. Попробуйте для начала его создать.\x1b[0m" << "\n\n\n\n"; 
+        cout << "\n" << "\x1b[31mОшибка 1: Необходимые файлы не открылись. Попробуйте запустить команду 1\x1b[0m" << "\n\n\n\n"; 
         return;
     } 
     getline(file, inputString); //Считать строку из файла
     file.close(); //Закрыть файл
-    for (int i = 0, counterSameSimbols; i < inputString.length(); i += counterSameSimbols - 1) { //Цикл получающий каждый раз новый символ
-        counterSameSimbols = 0; 
+    for (int i = 0, counterSameSimbols; i < inputString.length(); i += counterSameSimbols) { //Цикл получающий каждый раз новый символ
+        counterSameSimbols = 1; 
         outputString += inputString[i]; //Запись символа в итоговую строку 
-        for (int i1 = i++; inputString[i] == inputString[i1]; i1++, counterSameSimbols++) {} //Счётчик количества одинакового символа
-        if (counterSameSimbols == 0) { //Если символ всего один, то увеличить counterSameSimbols на 1
-            counterSameSimbols++; 
-        } 
+        for (int i1 = 1; inputString[i] == inputString[i + i1]; i1++, counterSameSimbols++) {} //Счётчик количества одинакового символа 
         if (counterSameSimbols > 1) { //Если повторов символа больше 1, то записывать цифру
             outputString += to_string(counterSameSimbols);
         }
     }
     file.open("output.txt", ios::out); //Открытие файла вывода
     if (!file.is_open()) { //Проверка открытия файла
-        cout << "\n" << "\x1b[31mОшибка 1: Файл не открылся. Попробуйте для начала его создать.\x1b[0m" << "\n\n\n\n"; 
+        cout << "\n" << "\x1b[31mОшибка 1: Необходимые файлы не открылись. Попробуйте запустить команду 1\x1b[0m" << "\n\n\n\n"; 
         return; 
     } 
     file << outputString; //Записать итог в файл
@@ -89,7 +91,7 @@ void Dearchive() {
     int fullNumber;
     fstream file("output.txt", ios::in);
     if (!file) { //Проверка открытия файла
-        cout << "Ошибка открытия файла output.txt. Возможно его не существует."; 
+        cout << "\n" << "\x1b[31mОшибка 1: Необходимые файлы не открылись. Попробуйте запустить команду 1\x1b[0m" << "\n\n\n\n";
         return;
     }
     getline(file, inputString);
@@ -100,7 +102,7 @@ void Dearchive() {
             continue; 
         }
         if (inputString[i] >= '0' and inputString[i] <= '9' and i == 0) { //Если первый символ цифра
-            cout << "Ошибка. Первый символ в файле - цифра. Такого не может быть.";
+            cout << "\n" << "\x1b[31mОшибка 2: Первый символ цифра\x1b[0m" << "\n\n\n\n";
             return; 
         }
         if (inputString[i] >= '0' and inputString[i] <= '9') { //Если символ - цифра
@@ -120,7 +122,7 @@ void Dearchive() {
     cout << "Итог:" << outputString << endl;
     file.open("output.txt", ios::out); 
     if (!file) { //Проверка открытия файла
-        cout << "Ошибка открытия файла. Возможно его не существует.";
+        cout << "\n" << "\x1b[31mОшибка 1: Необходимые файлы не открылись. Попробуйте запустить команду 1\x1b[0m" << "\n\n\n\n";
         return;
     }
     file << outputString; //Записать итог в файл
