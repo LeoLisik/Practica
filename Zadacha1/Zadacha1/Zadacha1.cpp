@@ -10,7 +10,7 @@
 using namespace std;
 
 void CreateInput() { //Функция создания и ввода в input/output
-    fstream File("input.txt");
+    fstream file("input.txt");
     int enterInt = 9;
     string forInput, enterStr = "0";
     while (enterStr.find_first_of("0123456789") < -1) { //Пока в строке есть цифры
@@ -24,45 +24,40 @@ void CreateInput() { //Функция создания и ввода в input/ou
             enterStr.clear(); 
         } 
     }
-    if (File) { //Если input открылся
+    if (file) { //Если input открылся
         cout << "Файл input уже существует, хотите перезаписать его?" << endl;
         while (enterInt != 1 and enterInt != 2) { //Пока выбор пользователя некоректный
             cout << "1 - Да" << endl << "2 - Нет" << endl << "Ваш выбор = ";
             getline(cin, enterStr);
             cout << endl << endl;
-            if ((ch != -1) or (ch2 != -1 and ch2 != 0) or (ch3 != 0)) { //Проверка на буквы
-                cout << "\x1b[31mОшибка 0: Некоректный ввод данных\x1b[0m"; 
-                enterInt = 9; 
+            if (enterStr.find_last_not_of("12") != -1 or enterStr.length() != 1) { //Проверка на буквы
+                cout << "\x1b[31mОшибка 0: Некоректный ввод данных\x1b[0m\n"; 
             } else { 
                 enterInt = atof(enterStr.c_str()); 
             } 
-            enterStr.clear(); //Очистка enterStr
-            if (enterInt != 1 and enterInt != 2) { //Проверка на допустимое число
-                cout << "\x1b[31mОшибка 0: Некоректный ввод данных\x1b[0m" << endl; 
-            }
             switch (enterInt) { //Переключатель выбора пользователя
-            case 1: { File.close(); File.open("input.txt", ios::out); File << forInput; File.close(); cout << "\n" << "\x1b[32mФайл успешно перезаписан\x1b[0m" << "\n\n\n\n"; break; } //Перезаписать input
-            case 2: { File.close(); cout << "\n" << "\x1b[33mФайл остался без изменений\x1b[0m" << "\n\n\n\n"; break; } //Закрыть input
+            case 1: { file.close(); file.open("input.txt", ios::out); file << forInput; file.close(); cout << "\n" << "\x1b[32mФайл успешно перезаписан\x1b[0m" << "\n\n\n\n"; break; } //Перезаписать input
+            case 2: { file.close(); cout << "\n" << "\x1b[33mФайл остался без изменений\x1b[0m" << "\n\n\n\n"; break; } //Закрыть input
             }
         }
     } else { //Если input не открылся - создать
-        File.open("input.txt", ios::in | ios::app); 
-        File << forInput;  
-        File.close(); 
+        file.open("input.txt", ios::in | ios::app); 
+        file << forInput;  
+        file.close(); 
         cout << "\n" << "\x1b[32mФайл успешно записан\x1b[0m" << "\n\n\n\n"; 
     }
-    File.open("output.txt");
-    if (!File) { //Если output не открылся - создать
-        File.open("output.txt", ios::in | ios::app); 
-        File.close(); 
+    file.open("output.txt");
+    if (!file) { //Если output не открылся - создать
+        file.open("output.txt", ios::in | ios::app); 
+        file.close(); 
         cout << "\n" << "\x1b[32moutput.txt успешно создан\x1b[0m" << "\n\n\n\n"; 
     } 
 }
 
 void Archive() { //Функция архивирования строки
     string inputString, outputString;
-    fstream file ("input.txt"); //Открыть файла ввода
-    if (!file.is_open()) { //Проверка открытия файла
+    fstream file("input.txt"); //Открыть файла ввода
+    if (!file) { //Проверка открытия файла
         cout << "\n" << "\x1b[31mОшибка 1: Необходимые файлы не открылись. Попробуйте запустить команду 1\x1b[0m" << "\n\n\n\n"; 
         return;
     } 
@@ -77,7 +72,7 @@ void Archive() { //Функция архивирования строки
         }
     }
     file.open("output.txt", ios::out); //Открытие файла вывода
-    if (!file.is_open()) { //Проверка открытия файла
+    if (!file) { //Проверка открытия файла
         cout << "\n" << "\x1b[31mОшибка 1: Необходимые файлы не открылись. Попробуйте запустить команду 1\x1b[0m" << "\n\n\n\n"; 
         return; 
     } 
@@ -87,7 +82,7 @@ void Archive() { //Функция архивирования строки
 }
 
 void Dearchive() {
-    string inputString, fullNumberStr, outputString = "";
+    string inputString, fullNumberStr, outputString;
     int fullNumber;
     fstream file("output.txt", ios::in);
     if (!file) { //Проверка открытия файла
@@ -95,31 +90,30 @@ void Dearchive() {
         return;
     }
     getline(file, inputString);
-    cout << "Было:" << inputString << endl;
     file.close();
-    for (int i = 0; i < inputString.length(); i++) { //Цикл перебирает каждый символ
-        if (inputString[i] >= '0' and inputString[i] <= '9' and inputString[i - 1] >= '0' and inputString[i - 1] <= '9') { //Если предыдущий символ число и текущий, то пропустить итерацию
-            continue; 
-        }
+    for (int i = 0; i < inputString.length(); i += fullNumberStr.length() + 1) { //Цикл перебирает каждый символ
+        fullNumberStr.clear(); //Очистка fullNumberStr после предыдущей итерации
+        //if (inputString[i] >= '0' and inputString[i] <= '9' and inputString[i - 1] >= '0' and inputString[i - 1] <= '9') { //Если предыдущий символ число и текущий, то пропустить итерацию
+        //    continue; 
+        //}
+        cout << "what" << endl;
         if (inputString[i] >= '0' and inputString[i] <= '9' and i == 0) { //Если первый символ цифра
             cout << "\n" << "\x1b[31mОшибка 2: Первый символ цифра\x1b[0m" << "\n\n\n\n";
             return; 
         }
         if (inputString[i] >= '0' and inputString[i] <= '9') { //Если символ - цифра
             fullNumberStr += inputString[i]; //добавляем к строке fullNumberStr текущее число
-            for (int j = 1; inputString[i + j] >= '0' and inputString[i + j] <= '9'; j++) { //Пока текущий символ - число
-                fullNumberStr += inputString[i + j]; //Добавлять число в строку полного числа
+            for (int i1 = 1; inputString[i + i1] >= '0' and inputString[i + i1] <= '9'; i1++) { //Пока текущий символ - число
+                fullNumberStr += inputString[i + i1]; //Добавлять число в строку полного числа
             }
             fullNumber = stoi(fullNumberStr); //перевод всех чисел в единую цифру
-            for (int j = 1; j < fullNumber; j++) { //Пока количество букв меньше уже поставленных
+            for (int i1 = 1; i1 < fullNumber; i1++) { //Пока количество букв меньше уже поставленных
                 outputString += inputString[i - 1]; //Добавлять букву в итог
             }
-            fullNumberStr.clear(); //Очистка fullNumberStr для следующей итерации
         } else { 
             outputString += inputString[i]; //Добавить текущую букву в итог
         }
     }
-    cout << "Итог:" << outputString << endl;
     file.open("output.txt", ios::out); 
     if (!file) { //Проверка открытия файла
         cout << "\n" << "\x1b[31mОшибка 1: Необходимые файлы не открылись. Попробуйте запустить команду 1\x1b[0m" << "\n\n\n\n";
@@ -140,9 +134,9 @@ int main()
         cout << "1 - Создать файлы и записать строку" << endl << "2 - Заархивировать файл" << endl << "3 - Разархивировать файл" << endl << "0 - Выход из программы" << endl << "Ваш выбор = ";
         getline(cin, enterStr);
         cout << endl << endl;
-        if ((ch != -1) or (ch2 != -1 and ch2 != 0) or (ch3 != 0) or (enterStr.empty()) or (ch2 == 0)) { cout << "\x1b[31mОшибка 0: Некоректный ввод данных\x1b[0m" << endl; enterInt = 9; }
+        if ((ch != -1) or (ch2 != -1 and ch2 != 0) or (ch3 != 0) or (enterStr.empty()) or (ch2 == 0)) { cout << "\x1b[31mОшибка 0: Некоректный ввод данных\x1b[0m" << endl; continue; }
         else { enterInt = atof(enterStr.c_str()); }
-        if (enterInt < 0 or enterInt > 3 and enterInt != 9) { cout << "\x1b[31mОшибка 2: Такой команды не существует\x1b[0m" << endl; } 
+        if (enterInt < 0 or enterInt > 3) { cout << "\x1b[31mОшибка 0: Некоректный ввод данных\x1b[0m" << endl; }
         switch (enterInt) { //Переключатель выбора пользователя
         case 1: { CreateInput(); break; } //Запуск функции создания файлов
         case 2: { Archive(); break; } //Запуск функции зашифровки файлов
