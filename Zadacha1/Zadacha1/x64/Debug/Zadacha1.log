@@ -1,5 +1,7 @@
 ﻿  Zadacha1.cpp
-D:\Practica\Zadacha1\Zadacha1\Zadacha1.cpp(36,32): warning C4244: =: преобразование "double" в "int", возможна потеря данных
-D:\Practica\Zadacha1\Zadacha1\Zadacha1.cpp(94,78): warning C4267: +=: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Practica\Zadacha1\Zadacha1\Zadacha1.cpp(138,31): warning C4244: =: преобразование "double" в "int", возможна потеря данных
-  Zadacha1.vcxproj -> D:\Practica\Zadacha1\x64\Debug\Zadacha1.exe
+C:\Users\trufe\Practica\Zadacha1\Zadacha1\Zadacha1.cpp(7,1): warning C4005: ch: изменение макроопределения
+C:\Users\trufe\Practica\Zadacha1\Zadacha1\Header.h(3): message : см. предыдущее определение "ch"
+C:\Users\trufe\Practica\Zadacha1\Zadacha1\Zadacha1.cpp(36,32): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+C:\Users\trufe\Practica\Zadacha1\Zadacha1\Zadacha1.cpp(96,74): warning C4267: +=: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\trufe\Practica\Zadacha1\Zadacha1\Zadacha1.cpp(136,31): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+  Zadacha1.vcxproj -> C:\Users\trufe\Practica\Zadacha1\x64\Debug\Zadacha1.exe

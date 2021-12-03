@@ -1,125 +1,122 @@
-п»ї#include <Windows.h>
+#include <Windows.h>
 #include "Header.h"
 #include <fstream>
 #include <locale.h>
 #include <iostream>
 #include <string>
-#define ch enterStr.find_last_not_of("-0123456789.")
-#define ch2 enterStr.find_last_of("-")
-#define ch3  enterStr.find_last_of(".")-enterStr.find_first_of(".")
+#define ch enterStr.find_last_not_of("0123")
 using namespace std;
 
-void CreateInput() { //Р¤СѓРЅРєС†РёСЏ СЃРѕР·РґР°РЅРёСЏ Рё РІРІРѕРґР° РІ input/output
+void CreateInput() { //Функция создания и ввода в input/output
     fstream file("input.txt");
     int enterInt = 9;
     string forInput, enterStr = "0";
-    while (enterStr.find_first_of("0123456789") < -1) { //РџРѕРєР° РІ СЃС‚СЂРѕРєРµ РµСЃС‚СЊ С†РёС„СЂС‹
-        cout << "Р’РІРµРґРёС‚Рµ СЃС‚СЂРѕРєСѓ РґР»СЏ Р·Р°РїРёСЃРё РІ С„Р°Р№Р» = ";
+    while (enterStr.find_first_of("0123456789") < -1) { //Пока в строке есть цифры
+        cout << "Введите строку для записи в файл = ";
         getline(cin, enterStr);
         cout << endl << endl;
-        if (enterStr.find_first_of("0123456789") < -1) { //Р’С‹РІРѕРґ РѕС€РёР±РєРё РїСЂРё РѕР±РЅР°СЂСѓР¶РµРЅРёРё С‡РёСЃРµР»
-            cout << "\x1b[31mРћС€РёР±РєР° 0: РќРµРєРѕСЂРµРєС‚РЅС‹Р№ РІРІРѕРґ РґР°РЅРЅС‹С…\x1b[0m" << endl; 
-        } else { //РЎРѕС…СЂР°РЅРµРЅРёРµ СЃС‚СЂРѕРєРё РІ РґСЂСѓРіРѕР№ РїРµСЂРµРјРµРЅРЅРѕР№ Рё РѕС‡РёС‰РµРЅРёРµ РІРІРѕРґРЅРѕР№ СЃС‚СЂРѕРєРё РґР»СЏ РґР°Р»СЊРЅРµР№С€РµРіРѕ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ
+        if (enterStr.find_first_of("0123456789") < -1) { //Вывод ошибки при обнаружении чисел
+            cout << "\x1b[31mОшибка 0: Некоректный ввод данных\x1b[0m" << endl; 
+        } else { //Сохранение строки в другой переменной и очищение вводной строки для дальнейшего использования
             forInput = enterStr; 
             enterStr.clear(); 
         } 
     }
-    if (file) { //Р•СЃР»Рё input РѕС‚РєСЂС‹Р»СЃСЏ
-        cout << "Р¤Р°Р№Р» input СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚, С…РѕС‚РёС‚Рµ РїРµСЂРµР·Р°РїРёСЃР°С‚СЊ РµРіРѕ?" << endl;
-        while (enterInt != 1 and enterInt != 2) { //РџРѕРєР° РІС‹Р±РѕСЂ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РЅРµРєРѕСЂРµРєС‚РЅС‹Р№
-            cout << "1 - Р”Р°" << endl << "2 - РќРµС‚" << endl << "Р’Р°С€ РІС‹Р±РѕСЂ = ";
+    if (file) { //Если input открылся
+        cout << "Файл input уже существует, хотите перезаписать его?" << endl;
+        while (enterInt != 1 and enterInt != 2) { //Пока выбор пользователя некоректный
+            cout << "1 - Да" << endl << "2 - Нет" << endl << "Ваш выбор = ";
             getline(cin, enterStr);
             cout << endl << endl;
-            if (enterStr.find_last_not_of("12") != -1 or enterStr.length() != 1) { //РџСЂРѕРІРµСЂРєР° РЅР° Р±СѓРєРІС‹
-                cout << "\x1b[31mРћС€РёР±РєР° 0: РќРµРєРѕСЂРµРєС‚РЅС‹Р№ РІРІРѕРґ РґР°РЅРЅС‹С…\x1b[0m\n"; 
+            if (enterStr.find_last_not_of("12") != -1 or enterStr.length() != 1) { //Проверка на буквы
+                cout << "\x1b[31mОшибка 0: Некоректный ввод данных\x1b[0m\n"; 
             } else { 
                 enterInt = atof(enterStr.c_str()); 
             } 
-            switch (enterInt) { //РџРµСЂРµРєР»СЋС‡Р°С‚РµР»СЊ РІС‹Р±РѕСЂР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
-            case 1: { file.close(); file.open("input.txt", ios::out); file << forInput; file.close(); cout << "\n" << "\x1b[32mР¤Р°Р№Р» СѓСЃРїРµС€РЅРѕ РїРµСЂРµР·Р°РїРёСЃР°РЅ\x1b[0m" << "\n\n\n\n"; break; } //РџРµСЂРµР·Р°РїРёСЃР°С‚СЊ input
-            case 2: { file.close(); cout << "\n" << "\x1b[33mР¤Р°Р№Р» РѕСЃС‚Р°Р»СЃСЏ Р±РµР· РёР·РјРµРЅРµРЅРёР№\x1b[0m" << "\n\n\n\n"; break; } //Р—Р°РєСЂС‹С‚СЊ input
+            switch (enterInt) { //Переключатель выбора пользователя
+            case 1: { file.close(); file.open("input.txt", ios::out); file << forInput; file.close(); cout << "\n" << "\x1b[32mФайл успешно перезаписан\x1b[0m" << "\n\n\n\n"; break; } //Перезаписать input
+            case 2: { file.close(); cout << "\n" << "\x1b[33mФайл остался без изменений\x1b[0m" << "\n\n\n\n"; break; } //Закрыть input
             }
         }
-    } else { //Р•СЃР»Рё input РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ - СЃРѕР·РґР°С‚СЊ
+    } else { //Если input не открылся - создать
         file.open("input.txt", ios::in | ios::app); 
         file << forInput;  
         file.close(); 
-        cout << "\n" << "\x1b[32mР¤Р°Р№Р» СѓСЃРїРµС€РЅРѕ Р·Р°РїРёСЃР°РЅ\x1b[0m" << "\n\n\n\n"; 
+        cout << "\n" << "\x1b[32mФайл успешно записан\x1b[0m" << "\n\n\n\n"; 
     }
     file.open("output.txt");
-    if (!file) { //Р•СЃР»Рё output РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ - СЃРѕР·РґР°С‚СЊ
+    if (!file) { //Если output не открылся - создать
         file.open("output.txt", ios::in | ios::app); 
         file.close(); 
-        cout << "\n" << "\x1b[32moutput.txt СѓСЃРїРµС€РЅРѕ СЃРѕР·РґР°РЅ\x1b[0m" << "\n\n\n\n"; 
+        cout << "\n" << "\x1b[32moutput.txt успешно создан\x1b[0m" << "\n\n\n\n"; 
     } 
 }
 
-void Archive() { //Р¤СѓРЅРєС†РёСЏ Р°СЂС…РёРІРёСЂРѕРІР°РЅРёСЏ СЃС‚СЂРѕРєРё
+void Archive() { //Функция архивирования строки
     string inputString, outputString;
-    fstream file("input.txt"); //РћС‚РєСЂС‹С‚СЊ С„Р°Р№Р»Р° РІРІРѕРґР°
-    if (!file) { //РџСЂРѕРІРµСЂРєР° РѕС‚РєСЂС‹С‚РёСЏ С„Р°Р№Р»Р°
-        cout << "\n" << "\x1b[31mРћС€РёР±РєР° 1: РќРµРѕР±С…РѕРґРёРјС‹Рµ С„Р°Р№Р»С‹ РЅРµ РѕС‚РєСЂС‹Р»РёСЃСЊ. РџРѕРїСЂРѕР±СѓР№С‚Рµ Р·Р°РїСѓСЃС‚РёС‚СЊ РєРѕРјР°РЅРґСѓ 1\x1b[0m" << "\n\n\n\n"; 
+    fstream file("input.txt"); //Открыть файла ввода
+    if (!file) { //Проверка открытия файла
+        cout << "\n" << "\x1b[31mОшибка 1: Необходимые файлы не открылись. Попробуйте запустить команду 1\x1b[0m" << "\n\n\n\n"; 
         return;
     } 
-    getline(file, inputString); //РЎС‡РёС‚Р°С‚СЊ СЃС‚СЂРѕРєСѓ РёР· С„Р°Р№Р»Р°
-    file.close(); //Р—Р°РєСЂС‹С‚СЊ С„Р°Р№Р»
-    for (int i = 0, counterSameSimbols; i < inputString.length(); i += counterSameSimbols) { //Р¦РёРєР» РїРѕР»СѓС‡Р°СЋС‰РёР№ РєР°Р¶РґС‹Р№ СЂР°Р· РЅРѕРІС‹Р№ СЃРёРјРІРѕР»
+    getline(file, inputString); //Считать строку из файла
+    file.close(); //Закрыть файл
+    for (int i = 0, counterSameSimbols; i < inputString.length(); i += counterSameSimbols) { //Цикл получающий каждый раз новый символ
         counterSameSimbols = 1; 
-        outputString += inputString[i]; //Р—Р°РїРёСЃСЊ СЃРёРјРІРѕР»Р° РІ РёС‚РѕРіРѕРІСѓСЋ СЃС‚СЂРѕРєСѓ 
-        for (int i1 = 1; inputString[i] == inputString[i + i1]; i1++, counterSameSimbols++) {} //РЎС‡С‘С‚С‡РёРє РєРѕР»РёС‡РµСЃС‚РІР° РѕРґРёРЅР°РєРѕРІРѕРіРѕ СЃРёРјРІРѕР»Р° 
-        if (counterSameSimbols > 1) { //Р•СЃР»Рё РїРѕРІС‚РѕСЂРѕРІ СЃРёРјРІРѕР»Р° Р±РѕР»СЊС€Рµ 1, С‚Рѕ Р·Р°РїРёСЃС‹РІР°С‚СЊ С†РёС„СЂСѓ
+        outputString += inputString[i]; //Запись символа в итоговую строку 
+        for (int i1 = 1; inputString[i] == inputString[i + i1]; i1++, counterSameSimbols++) {} //Счётчик количества одинакового символа 
+        if (counterSameSimbols > 1) { //Если повторов символа больше 1, то записывать цифру
             outputString += to_string(counterSameSimbols);
         }
     }
-    file.open("output.txt", ios::out); //РћС‚РєСЂС‹С‚РёРµ С„Р°Р№Р»Р° РІС‹РІРѕРґР°
-    if (!file) { //РџСЂРѕРІРµСЂРєР° РѕС‚РєСЂС‹С‚РёСЏ С„Р°Р№Р»Р°
-        cout << "\n" << "\x1b[31mРћС€РёР±РєР° 1: РќРµРѕР±С…РѕРґРёРјС‹Рµ С„Р°Р№Р»С‹ РЅРµ РѕС‚РєСЂС‹Р»РёСЃСЊ. РџРѕРїСЂРѕР±СѓР№С‚Рµ Р·Р°РїСѓСЃС‚РёС‚СЊ РєРѕРјР°РЅРґСѓ 1\x1b[0m" << "\n\n\n\n"; 
+    file.open("output.txt", ios::out); //Открытие файла вывода
+    if (!file) { //Проверка открытия файла
+        cout << "\n" << "\x1b[31mОшибка 1: Необходимые файлы не открылись. Попробуйте запустить команду 1\x1b[0m" << "\n\n\n\n"; 
         return; 
     } 
-    file << outputString; //Р—Р°РїРёСЃР°С‚СЊ РёС‚РѕРі РІ С„Р°Р№Р»
-    file.close(); //Р—Р°РєСЂС‹С‚СЊ С„Р°Р№Р»
-    cout << "\n" << "\x1b[32mРђСЂС…РёРІР°С†РёСЏ СѓСЃРїРµС€РЅРѕ РІС‹РїРѕР»РЅРµРЅР°\x1b[0m" << "\n\n\n\n";
+    file << outputString; //Записать итог в файл
+    file.close(); //Закрыть файл
+    cout << "\n" << "\x1b[32mАрхивация успешно выполнена\x1b[0m" << "\n\n\n\n";
 }
 
 void Dearchive() {
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
     string inputString, fullNumberStr, outputString;
     int fullNumber;
     fstream file("output.txt", ios::in);
-    if (!file) { //РџСЂРѕРІРµСЂРєР° РѕС‚РєСЂС‹С‚РёСЏ С„Р°Р№Р»Р°
-        cout << "\n" << "\x1b[31mРћС€РёР±РєР° 1: РќРµРѕР±С…РѕРґРёРјС‹Рµ С„Р°Р№Р»С‹ РЅРµ РѕС‚РєСЂС‹Р»РёСЃСЊ. РџРѕРїСЂРѕР±СѓР№С‚Рµ Р·Р°РїСѓСЃС‚РёС‚СЊ РєРѕРјР°РЅРґСѓ 1\x1b[0m" << "\n\n\n\n";
+    if (!file) { //Проверка открытия файла
+        cout << "\n" << "\x1b[31mОшибка 1: Необходимые файлы не открылись. Попробуйте запустить команду 1\x1b[0m" << "\n\n\n\n";
         return;
     }
     getline(file, inputString);
     file.close();
-    for (int i = 0; i < inputString.length(); i += fullNumberStr.length() + 1) { //Р¦РёРєР» РїРµСЂРµР±РёСЂР°РµС‚ РєР°Р¶РґС‹Р№ СЃРёРјРІРѕР»
-        fullNumberStr.clear(); //РћС‡РёСЃС‚РєР° fullNumberStr РїРѕСЃР»Рµ РїСЂРµРґС‹РґСѓС‰РµР№ РёС‚РµСЂР°С†РёРё
-        //if (inputString[i] >= '0' and inputString[i] <= '9' and inputString[i - 1] >= '0' and inputString[i - 1] <= '9') { //Р•СЃР»Рё РїСЂРµРґС‹РґСѓС‰РёР№ СЃРёРјРІРѕР» С‡РёСЃР»Рѕ Рё С‚РµРєСѓС‰РёР№, С‚Рѕ РїСЂРѕРїСѓСЃС‚РёС‚СЊ РёС‚РµСЂР°С†РёСЋ
-        //    continue; 
-        //}
-        cout << "what" << endl;
-        if (inputString[i] >= '0' and inputString[i] <= '9' and i == 0) { //Р•СЃР»Рё РїРµСЂРІС‹Р№ СЃРёРјРІРѕР» С†РёС„СЂР°
-            cout << "\n" << "\x1b[31mРћС€РёР±РєР° 2: РџРµСЂРІС‹Р№ СЃРёРјРІРѕР» С†РёС„СЂР°\x1b[0m" << "\n\n\n\n";
+    for (int i = 0; i < inputString.length(); i += fullNumberStr.length()) { //Цикл перебирает буквы и числа
+        fullNumberStr.clear(); //Очистка fullNumberStr после предыдущей итерации
+        if (inputString[i] >= '0' and inputString[i] <= '9' and i == 0) { //Если первый символ цифра
+            cout << "\n" << "\x1b[31mОшибка 2: Первый символ цифра\x1b[0m" << "\n\n\n\n";
             return; 
         }
-        if (inputString[i] >= '0' and inputString[i] <= '9') { //Р•СЃР»Рё СЃРёРјРІРѕР» - С†РёС„СЂР°
-            fullNumberStr += inputString[i]; //РґРѕР±Р°РІР»СЏРµРј Рє СЃС‚СЂРѕРєРµ fullNumberStr С‚РµРєСѓС‰РµРµ С‡РёСЃР»Рѕ
-            for (int i1 = 1; inputString[i + i1] >= '0' and inputString[i + i1] <= '9'; i1++) { //РџРѕРєР° С‚РµРєСѓС‰РёР№ СЃРёРјРІРѕР» - С‡РёСЃР»Рѕ
-                fullNumberStr += inputString[i + i1]; //Р”РѕР±Р°РІР»СЏС‚СЊ С‡РёСЃР»Рѕ РІ СЃС‚СЂРѕРєСѓ РїРѕР»РЅРѕРіРѕ С‡РёСЃР»Р°
+        if (inputString[i] >= '0' and inputString[i] <= '9') { //Если символ - цифра
+            fullNumberStr += inputString[i]; //добавляем к строке fullNumberStr текущее число
+            for (int i1 = 1; inputString[i + i1] >= '0' and inputString[i + i1] <= '9'; i1++) { //Пока текущий символ - число
+                fullNumberStr += inputString[i + i1]; //Добавлять число в строку полного числа
             }
-            fullNumber = stoi(fullNumberStr); //РїРµСЂРµРІРѕРґ РІСЃРµС… С‡РёСЃРµР» РІ РµРґРёРЅСѓСЋ С†РёС„СЂСѓ
-            for (int i1 = 1; i1 < fullNumber; i1++) { //РџРѕРєР° РєРѕР»РёС‡РµСЃС‚РІРѕ Р±СѓРєРІ РјРµРЅСЊС€Рµ СѓР¶Рµ РїРѕСЃС‚Р°РІР»РµРЅРЅС‹С…
-                outputString += inputString[i - 1]; //Р”РѕР±Р°РІР»СЏС‚СЊ Р±СѓРєРІСѓ РІ РёС‚РѕРі
+            fullNumber = stoi(fullNumberStr); //перевод всех чисел в единую цифру
+            for (int i1 = 1; i1 < fullNumber; i1++) { //Пока количество букв меньше уже поставленных
+                outputString += inputString[i - 1]; //Добавлять букву в итог
             }
         } else { 
-            outputString += inputString[i]; //Р”РѕР±Р°РІРёС‚СЊ С‚РµРєСѓС‰СѓСЋ Р±СѓРєРІСѓ РІ РёС‚РѕРі
+            outputString += inputString[i]; //Добавить текущую букву в итог
+            fullNumberStr = '1';
         }
     }
     file.open("output.txt", ios::out); 
-    if (!file) { //РџСЂРѕРІРµСЂРєР° РѕС‚РєСЂС‹С‚РёСЏ С„Р°Р№Р»Р°
-        cout << "\n" << "\x1b[31mРћС€РёР±РєР° 1: РќРµРѕР±С…РѕРґРёРјС‹Рµ С„Р°Р№Р»С‹ РЅРµ РѕС‚РєСЂС‹Р»РёСЃСЊ. РџРѕРїСЂРѕР±СѓР№С‚Рµ Р·Р°РїСѓСЃС‚РёС‚СЊ РєРѕРјР°РЅРґСѓ 1\x1b[0m" << "\n\n\n\n";
+    if (!file) { //Проверка открытия файла
+        cout << "\n" << "\x1b[31mОшибка 1: Необходимые файлы не открылись. Попробуйте запустить команду 1\x1b[0m" << "\n\n\n\n";
         return;
     }
-    file << outputString; //Р—Р°РїРёСЃР°С‚СЊ РёС‚РѕРі РІ С„Р°Р№Р»
+    file << outputString; //Записать итог в файл
     file.close(); 
 }
 
@@ -127,21 +124,20 @@ int main()
 {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
-    int endProgram = 0;
-    while (endProgram == 0) { //Р¦РёРєР» СЂР°Р±РѕС‚С‹ РїСЂРѕРіСЂР°РјРјС‹
-        int enterInt;
-        string enterStr;
-        cout << "1 - РЎРѕР·РґР°С‚СЊ С„Р°Р№Р»С‹ Рё Р·Р°РїРёСЃР°С‚СЊ СЃС‚СЂРѕРєСѓ" << endl << "2 - Р—Р°Р°СЂС…РёРІРёСЂРѕРІР°С‚СЊ С„Р°Р№Р»" << endl << "3 - Р Р°Р·Р°СЂС…РёРІРёСЂРѕРІР°С‚СЊ С„Р°Р№Р»" << endl << "0 - Р’С‹С…РѕРґ РёР· РїСЂРѕРіСЂР°РјРјС‹" << endl << "Р’Р°С€ РІС‹Р±РѕСЂ = ";
+    int enterInt, endProgram = 0;
+    string enterStr;
+    while (endProgram == 0) { //Цикл работы программы
+        cout << "1 - Создать файлы и записать строку" << endl << "2 - Заархивировать файл" << endl << "3 - Разархивировать файл" << endl << "0 - Выход из программы" << endl << "Ваш выбор = ";
         getline(cin, enterStr);
         cout << endl << endl;
-        if ((ch != -1) or (ch2 != -1 and ch2 != 0) or (ch3 != 0) or (enterStr.empty()) or (ch2 == 0)) { cout << "\x1b[31mРћС€РёР±РєР° 0: РќРµРєРѕСЂРµРєС‚РЅС‹Р№ РІРІРѕРґ РґР°РЅРЅС‹С…\x1b[0m" << endl; continue; }
+        if ((ch != -1) or (enterStr.empty())) { cout << "\x1b[31mОшибка 0: Некоректный ввод данных\x1b[0m" << endl; continue; }
         else { enterInt = atof(enterStr.c_str()); }
-        if (enterInt < 0 or enterInt > 3) { cout << "\x1b[31mРћС€РёР±РєР° 0: РќРµРєРѕСЂРµРєС‚РЅС‹Р№ РІРІРѕРґ РґР°РЅРЅС‹С…\x1b[0m" << endl; }
-        switch (enterInt) { //РџРµСЂРµРєР»СЋС‡Р°С‚РµР»СЊ РІС‹Р±РѕСЂР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
-        case 1: { CreateInput(); break; } //Р—Р°РїСѓСЃРє С„СѓРЅРєС†РёРё СЃРѕР·РґР°РЅРёСЏ С„Р°Р№Р»РѕРІ
-        case 2: { Archive(); break; } //Р—Р°РїСѓСЃРє С„СѓРЅРєС†РёРё Р·Р°С€РёС„СЂРѕРІРєРё С„Р°Р№Р»РѕРІ
-        case 3: { Dearchive(); break; } //Р—Р°РїСѓСЃРє С„СѓРЅРєС†РёРё СЂР°СЃС€РёС„СЂРѕРІРєРё С„Р°Р№Р»Р°
-        case 0: { endProgram = 1; break; } //Р’С‹РєР»СЋС‡РµРЅРёРµ РїСЂРѕРіСЂР°РјРјС‹
+        if (enterInt < 0 or enterInt > 3) { cout << "\x1b[31mОшибка 0: Некоректный ввод данных\x1b[0m" << endl; continue; }
+        switch (enterInt) { //Переключатель выбора пользователя
+        case 1: { CreateInput(); break; } //Запуск функции создания файлов
+        case 2: { Archive(); break; } //Запуск функции зашифровки файлов
+        case 3: { Dearchive(); break; } //Запуск функции расшифровки файла
+        case 0: { endProgram = 1; break; } //Выключение программы
         }
     }
 }
