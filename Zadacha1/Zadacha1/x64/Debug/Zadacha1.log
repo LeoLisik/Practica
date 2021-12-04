@@ -1,7 +1,2 @@
-﻿  Zadacha1.cpp
-C:\Users\trufe\Practica\Zadacha1\Zadacha1\Zadacha1.cpp(7,1): warning C4005: ch: изменение макроопределения
-C:\Users\trufe\Practica\Zadacha1\Zadacha1\Header.h(3): message : см. предыдущее определение "ch"
-C:\Users\trufe\Practica\Zadacha1\Zadacha1\Zadacha1.cpp(36,32): warning C4244: =: преобразование "double" в "int", возможна потеря данных
-C:\Users\trufe\Practica\Zadacha1\Zadacha1\Zadacha1.cpp(96,74): warning C4267: +=: преобразование из "size_t" в "int"; возможна потеря данных
-C:\Users\trufe\Practica\Zadacha1\Zadacha1\Zadacha1.cpp(136,31): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+﻿  LINK : не найден или не выполнена сборка C:\Users\trufe\Practica\Zadacha1\x64\Debug\Zadacha1.exe при последней инкрементной компоновке; выполняется полная компоновка
   Zadacha1.vcxproj -> C:\Users\trufe\Practica\Zadacha1\x64\Debug\Zadacha1.exe
