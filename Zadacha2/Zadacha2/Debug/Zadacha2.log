@@ -1,0 +1,4 @@
+﻿  Zadacha2.cpp
+C:\Users\trufe\Practica\Zadacha2\Zadacha2\Zadacha2.cpp(23,23): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\trufe\Practica\Zadacha2\Zadacha2\Zadacha2.cpp(47,31): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+  Zadacha2.vcxproj -> C:\Users\trufe\Practica\Zadacha2\Debug\Zadacha2.exe
