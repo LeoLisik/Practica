@@ -1,17 +1,15 @@
 #include <Windows.h>
-#include "Header.h"
 #include <fstream>
 #include <locale.h>
 #include <iostream>
 #include <string>
-#define ch enterStr.find_last_not_of("0123")
 using namespace std;
 
 void CreateInput() { //Функция создания и ввода в input/output
     fstream file("input.txt");
     int enterInt = 9;
     string forInput, enterStr = "0";
-    while (enterStr.find_first_of("0123456789") < -1) { //Пока в строке есть цифры
+    while (enterStr.find_first_of("0123456789") != -1) { //Пока в строке есть цифры
         cout << "Введите строку для записи в файл = ";
         getline(cin, enterStr);
         cout << endl << endl;
@@ -30,12 +28,23 @@ void CreateInput() { //Функция создания и ввода в input/output
             cout << endl << endl;
             if (enterStr.find_last_not_of("12") != -1 or enterStr.length() != 1) { //Проверка на буквы
                 cout << "\x1b[31mОшибка 0: Некоректный ввод данных\x1b[0m\n"; 
+                continue;
             } else { 
                 enterInt = atof(enterStr.c_str()); 
             } 
             switch (enterInt) { //Переключатель выбора пользователя
-            case 1: { file.close(); file.open("input.txt", ios::out); file << forInput; file.close(); cout << "\n" << "\x1b[32mФайл успешно перезаписан\x1b[0m" << "\n\n\n\n"; break; } //Перезаписать input
-            case 2: { file.close(); cout << "\n" << "\x1b[33mФайл остался без изменений\x1b[0m" << "\n\n\n\n"; break; } //Закрыть input
+            case 1: { 
+                file.close();
+                file.open("input.txt", ios::out); 
+                file << forInput; file.close(); 
+                cout << "\n" << "\x1b[32mФайл успешно перезаписан\x1b[0m" << "\n\n\n\n";  
+                break; 
+            } //Перезаписать input
+            case 2: { 
+                file.close(); 
+                cout << "\n" << "\x1b[33mФайл остался без изменений\x1b[0m" << "\n\n\n\n"; 
+                break; 
+            } //Закрыть input
             }
         }
     } else { //Если input не открылся - создать
@@ -44,12 +53,13 @@ void CreateInput() { //Функция создания и ввода в input/output
         file.close(); 
         cout << "\n" << "\x1b[32mФайл успешно записан\x1b[0m" << "\n\n\n\n"; 
     }
-    file.open("output.txt");
-    if (!file) { //Если output не открылся - создать
-        file.open("output.txt", ios::in | ios::app); 
-        file.close(); 
-        cout << "\n" << "\x1b[32moutput.txt успешно создан\x1b[0m" << "\n\n\n\n"; 
-    } 
+    file.open("input.txt", ios::in);
+    getline(file, forInput);
+    cout << "\n\x1b[33mВ файле input.txt находится: \x1b[0m\n" << forInput << "\n\n\n\n";
+    file.close();
+    file.open("output.txt", ios::in | ios::app); 
+    file.close(); 
+    cout << "\n" << "\x1b[32moutput.txt успешно создан\x1b[0m" << "\n\n\n\n"; 
 }
 
 void Archive() { //Функция архивирования строки
@@ -77,11 +87,12 @@ void Archive() { //Функция архивирования строки
     file << outputString; //Записать итог в файл
     file.close(); //Закрыть файл
     cout << "\n" << "\x1b[32mАрхивация успешно выполнена\x1b[0m" << "\n\n\n\n";
+    cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<\n" << inputString;
+    cout << "\n==========================";
+    cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>\n" << outputString << "\n\n\n";
 }
 
 void Dearchive() {
-    SetConsoleCP(1251);
-    SetConsoleOutputCP(1251);
     string inputString, fullNumberStr, outputString;
     int fullNumber;
     fstream file("output.txt", ios::in);
@@ -118,6 +129,10 @@ void Dearchive() {
     }
     file << outputString; //Записать итог в файл
     file.close(); 
+    cout << "\n" << "\x1b[32mДеархивация успешно выполнена\x1b[0m" << "\n\n\n\n";
+    cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<\n" << inputString;
+    cout << "\n==========================";
+    cout << "\n>>>>>>>>>>>>>>>>>>>>>>>>>>\n" << outputString << "\n\n\n";
 }
 
 int main()
@@ -127,10 +142,10 @@ int main()
     int enterInt, endProgram = 0;
     string enterStr;
     while (endProgram == 0) { //Цикл работы программы
-        cout << "1 - Создать файлы и записать строку" << endl << "2 - Заархивировать файл" << endl << "3 - Разархивировать файл" << endl << "0 - Выход из программы" << endl << "Ваш выбор = ";
+        cout << "1 - Создать файлы и записать строку\n" << "2 - Заархивировать файл\n" << "3 - Разархивировать файл\n" << "0 - Выход из программы\n" << "Ваш выбор = ";
         getline(cin, enterStr);
-        cout << endl << endl;
-        if ((ch != -1) or (enterStr.empty())) { cout << "\x1b[31mОшибка 0: Некоректный ввод данных\x1b[0m" << endl; continue; }
+        cout << "\n\n";
+        if ((enterStr.find_last_not_of("0123") != -1) or (enterStr.empty())) { cout << "\x1b[31mОшибка 0: Некоректный ввод данных\x1b[0m" << endl; continue; }
         else { enterInt = atof(enterStr.c_str()); }
         if (enterInt < 0 or enterInt > 3) { cout << "\x1b[31mОшибка 0: Некоректный ввод данных\x1b[0m" << endl; continue; }
         switch (enterInt) { //Переключатель выбора пользователя

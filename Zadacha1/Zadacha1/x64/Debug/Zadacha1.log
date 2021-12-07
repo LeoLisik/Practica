@@ -1,2 +1,5 @@
-﻿  LINK : не найден или не выполнена сборка C:\Users\trufe\Practica\Zadacha1\x64\Debug\Zadacha1.exe при последней инкрементной компоновке; выполняется полная компоновка
-  Zadacha1.vcxproj -> C:\Users\trufe\Practica\Zadacha1\x64\Debug\Zadacha1.exe
+﻿  Zadacha1.cpp
+F:\Practica\Zadacha1\Zadacha1\Zadacha1.cpp(33,32): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+F:\Practica\Zadacha1\Zadacha1\Zadacha1.cpp(105,74): warning C4267: +=: преобразование из "size_t" в "int"; возможна потеря данных
+F:\Practica\Zadacha1\Zadacha1\Zadacha1.cpp(149,31): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+  Zadacha1.vcxproj -> F:\Practica\Zadacha1\x64\Debug\Zadacha1.exe
